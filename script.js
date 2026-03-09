@@ -94,14 +94,18 @@ if ("IntersectionObserver" in window) {
 const contactForm = document.getElementById("contactForm");
 const contactFormStatus = document.getElementById("contactFormStatus");
 const contactFormSubmit = document.getElementById("contactFormSubmit");
+const contactNameInput = contactForm && contactForm.querySelector('[name="name"]');
+const contactEmailInput = contactForm && contactForm.querySelector('[name="email"]');
+const contactPhoneInput = contactForm && contactForm.querySelector('[name="phone"]');
+const contactMessageInput = contactForm && contactForm.querySelector('[name="message"]');
 
 if (contactForm && contactFormStatus && contactFormSubmit) {
   contactForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const name = (contactForm.querySelector('[name="name"]') && contactForm.querySelector('[name="name"]').value) || "";
-    const email = (contactForm.querySelector('[name="email"]') && contactForm.querySelector('[name="email"]').value) || "";
-    const phone = (contactForm.querySelector('[name="phone"]') && contactForm.querySelector('[name="phone"]').value) || "";
-    const message = (contactForm.querySelector('[name="message"]') && contactForm.querySelector('[name="message"]').value) || "";
+    const name = (contactNameInput && contactNameInput.value) || "";
+    const email = (contactEmailInput && contactEmailInput.value) || "";
+    const phone = (contactPhoneInput && contactPhoneInput.value) || "";
+    const message = (contactMessageInput && contactMessageInput.value) || "";
     const nameParts = name.trim().split(/\s+/);
     const imie = nameParts[0] || "";
     const nazwisko = nameParts.slice(1).join(" ") || "";
@@ -142,16 +146,30 @@ if (canvas) {
   let h = 0;
   let dpr = 1;
   let nodes = [];
+  /** @type {Map<string, number[]>} spatial grid: cellKey -> node indices */
+  let grid = new Map();
+  const LINK_DISTANCE = 96;
+  const CELL_SIZE = 96;
+  const INFLUENCE_RADIUS = 180;
+  const IDLE_MS = 2500;
+  const IDLE_FRAME_MS = 500;
+  const useShadowBlur = !(navigator.hardwareConcurrency <= 4 || window.innerWidth < 768);
+
   let mouse = {
     x: -1000,
     y: -1000,
     active: false
   };
+  let lastMouseTime = 0;
+  let rafId = 0;
+  let timeoutId = 0;
 
   function resizeCanvas() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = window.innerWidth;
-    h = window.innerHeight;
+    const maxW = 1920;
+    const maxH = 1080;
+    w = Math.min(window.innerWidth, maxW);
+    h = Math.min(window.innerHeight, maxH);
 
     canvas.width = Math.floor(w * dpr);
     canvas.height = Math.floor(h * dpr);
@@ -162,9 +180,13 @@ if (canvas) {
     createNodes();
   }
 
+  function cellKey(cx, cy) {
+    return `${cx},${cy}`;
+  }
+
   function createNodes() {
     nodes = [];
-    const spacing = window.innerWidth < 768 ? 74 : 60;
+    const spacing = window.innerWidth < 768 ? 90 : 60;
 
     for (let x = 0; x <= w + spacing; x += spacing) {
       for (let y = 0; y <= h + spacing; y += spacing) {
@@ -176,12 +198,24 @@ if (canvas) {
         });
       }
     }
+
+    grid = new Map();
+    for (let i = 0; i < nodes.length; i++) {
+      const nx = nodes[i].x;
+      const ny = nodes[i].y;
+      const cx = Math.floor(nx / CELL_SIZE);
+      const cy = Math.floor(ny / CELL_SIZE);
+      const key = cellKey(cx, cy);
+      if (!grid.has(key)) grid.set(key, []);
+      grid.get(key).push(i);
+    }
   }
 
   function setMouse(x, y) {
     mouse.x = x;
     mouse.y = y;
     mouse.active = true;
+    lastMouseTime = performance.now();
   }
 
   window.addEventListener("mousemove", (e) => {
@@ -210,34 +244,51 @@ if (canvas) {
     mouse.y = -1000;
   });
 
-  function draw(time) {
-    ctx.clearRect(0, 0, w, h);
+  function getNeighborIndices(i) {
+    const a = nodes[i];
+    const cx = Math.floor(a.x / CELL_SIZE);
+    const cy = Math.floor(a.y / CELL_SIZE);
+    const out = [];
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        const list = grid.get(cellKey(cx + dx, cy + dy));
+        if (list) {
+          for (const j of list) {
+            if (j > i) out.push(j);
+          }
+        }
+      }
+    }
+    return out;
+  }
 
-    const influenceRadius = 180;
-    const linkDistance = 96;
+  function draw(time) {
+    if (document.visibilityState !== "visible") return;
+
+    ctx.clearRect(0, 0, w, h);
 
     for (let i = 0; i < nodes.length; i++) {
       const a = nodes[i];
+      const neighbors = getNeighborIndices(i);
 
-      for (let j = i + 1; j < nodes.length; j++) {
+      for (const j of neighbors) {
         const b = nodes[j];
         const dx = a.x - b.x;
         const dy = a.y - b.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist > linkDistance) continue;
+        if (dist > LINK_DISTANCE) continue;
 
         let glow = 0;
-
         if (mouse.active) {
           const da = Math.hypot(a.x - mouse.x, a.y - mouse.y);
           const db = Math.hypot(b.x - mouse.x, b.y - mouse.y);
-          const ga = da < influenceRadius ? 1 - da / influenceRadius : 0;
-          const gb = db < influenceRadius ? 1 - db / influenceRadius : 0;
+          const ga = da < INFLUENCE_RADIUS ? 1 - da / INFLUENCE_RADIUS : 0;
+          const gb = db < INFLUENCE_RADIUS ? 1 - db / INFLUENCE_RADIUS : 0;
           glow = Math.max(ga, gb);
         }
 
-        const alpha = 0.045 + (1 - dist / linkDistance) * 0.055 + glow * 0.42;
+        const alpha = 0.045 + (1 - dist / LINK_DISTANCE) * 0.055 + glow * 0.42;
 
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
@@ -245,7 +296,7 @@ if (canvas) {
         ctx.strokeStyle = `rgba(132, 165, 255, ${alpha})`;
         ctx.lineWidth = glow > 0.15 ? 1.5 : 1;
 
-        if (glow > 0.08) {
+        if (useShadowBlur && glow > 0.5) {
           ctx.shadowBlur = 10 + glow * 20;
           ctx.shadowColor = "rgba(255, 214, 164, 0.95)";
         } else {
@@ -263,8 +314,8 @@ if (canvas) {
       let glow = 0;
       if (mouse.active) {
         const dist = Math.hypot(node.x - mouse.x, node.y - mouse.y);
-        if (dist < influenceRadius) {
-          glow = 1 - dist / influenceRadius;
+        if (dist < INFLUENCE_RADIUS) {
+          glow = 1 - dist / INFLUENCE_RADIUS;
         }
       }
 
@@ -275,7 +326,7 @@ if (canvas) {
       ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(145, 176, 255, ${alpha})`;
 
-      if (glow > 0.08) {
+      if (useShadowBlur && glow > 0.5) {
         ctx.shadowBlur = 14 + glow * 24;
         ctx.shadowColor = "rgba(255, 209, 153, 1)";
       } else {
@@ -286,11 +337,34 @@ if (canvas) {
       ctx.shadowBlur = 0;
     }
 
-    requestAnimationFrame(draw);
+    if (document.visibilityState !== "visible") return;
+
+    const idle = time - lastMouseTime > IDLE_MS;
+    if (idle) {
+      timeoutId = setTimeout(() => draw(performance.now()), IDLE_FRAME_MS);
+    } else {
+      rafId = requestAnimationFrame(draw);
+    }
   }
 
+  function startLoop() {
+    if (document.visibilityState !== "visible") return;
+    rafId = requestAnimationFrame(draw);
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = 0;
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = 0;
+    } else {
+      startLoop();
+    }
+  });
+
   resizeCanvas();
-  requestAnimationFrame(draw);
+  startLoop();
 
   let resizeTimer = null;
   window.addEventListener("resize", () => {

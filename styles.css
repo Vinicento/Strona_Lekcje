@@ -50,12 +50,10 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
-  /* Single smooth gradient so all sections feel connected; orange/yellow accent flows through */
   background:
-    radial-gradient(ellipse 100% 80% at 15% 10%, rgba(255, 220, 176, 0.4), transparent 45%),
-    radial-gradient(ellipse 90% 70% at 88% 15%, rgba(174, 202, 255, 0.32), transparent 45%),
-    radial-gradient(ellipse 120% 60% at 50% 95%, rgba(255, 238, 210, 0.35), transparent 50%),
-    linear-gradient(180deg, #fbfcff 0%, #f6f8ff 25%, #f4f6ff 50%, #f8f6ff 75%, #fffaf4 100%);
+    radial-gradient(ellipse 100% 80% at 15% 10%, rgba(255, 220, 176, 0.38), transparent 48%),
+    radial-gradient(ellipse 85% 65% at 88% 15%, rgba(174, 202, 255, 0.3), transparent 48%),
+    linear-gradient(180deg, #fbfcff 0%, #f6f8ff 50%, #fffaf4 100%);
 }
 
 img {
@@ -123,6 +121,7 @@ main {
   z-index: 1;
   pointer-events: none;
   opacity: 1;
+  contain: layout style paint;
 }
 
 .bg-grid,
@@ -131,6 +130,7 @@ main {
   position: fixed;
   inset: 0;
   pointer-events: none;
+  contain: layout style paint;
 }
 
 .bg-grid {
@@ -154,7 +154,7 @@ main {
 
 .bg-glow {
   z-index: 0;
-  filter: blur(70px);
+  filter: blur(40px);
 }
 
 .glow-1 {
@@ -166,11 +166,9 @@ main {
 }
 
 .glass {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.62));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.82));
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
 }
 
 .site-header {
@@ -1278,10 +1276,9 @@ main {
 
 .privacy-content {
   max-width: 900px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.72));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.88));
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(14px);
   border-radius: 28px;
   padding: 34px;
 }
