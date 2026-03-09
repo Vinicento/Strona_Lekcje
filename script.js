@@ -1,0 +1,300 @@
+const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+const mobileNav = document.getElementById("mobileNav");
+const revealItems = document.querySelectorAll(".reveal");
+const yearEl = document.getElementById("year");
+
+/* ----- Google Form: zapis do Twojego formularza (bez logo, bez „Wyczyść”) ----- */
+const GOOGLE_FORM_ACTION = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSc0S1AyTNnOzpvLbndvXT7xbXMglpZd4mIF6i2Hq8nMJjpNCA/formResponse";
+const GOOGLE_FORM_ENTRIES = {
+  imie: "entry.802299419",
+  nazwisko: "entry.391572716",
+  email: "entry.880540214",
+  telefon: "entry.1612311520",
+  wiadomosc: "entry.936444586"
+};
+
+if (yearEl) {
+  yearEl.textContent = new Date().getFullYear();
+}
+
+if (mobileMenuBtn && mobileNav) {
+  mobileMenuBtn.addEventListener("click", () => {
+    const isOpen = mobileNav.classList.toggle("is-open");
+    mobileMenuBtn.setAttribute("aria-expanded", String(isOpen));
+    mobileMenuBtn.setAttribute("aria-label", isOpen ? "Zamknij menu" : "Otwórz menu");
+  });
+
+  mobileNav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileNav.classList.remove("is-open");
+      mobileMenuBtn.setAttribute("aria-expanded", "false");
+      mobileMenuBtn.setAttribute("aria-label", "Otwórz menu");
+    });
+  });
+}
+
+/* ----- Active section in nav (desktop + mobile) ----- */
+const sectionIds = ["offer", "process", "pricing", "opinions", "contact"];
+const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+const headerOffset = 120;
+
+function setActiveNav() {
+  let activeId = null;
+  let maxTop = -Infinity;
+  for (const id of sectionIds) {
+    const section = document.getElementById(id);
+    if (!section) continue;
+    const top = section.getBoundingClientRect().top;
+    if (top <= headerOffset + 80 && top > maxTop) {
+      maxTop = top;
+      activeId = id;
+    }
+  }
+  if (!activeId && sectionIds.length) activeId = sectionIds[0];
+  navLinks.forEach((link) => {
+    const href = link.getAttribute("href");
+    const isActive = href === "#" + activeId;
+    link.classList.toggle("is-active", isActive);
+    link.setAttribute("aria-current", isActive ? "true" : null);
+  });
+}
+
+let navScrollTicking = false;
+window.addEventListener("scroll", () => {
+  if (!navScrollTicking) {
+    requestAnimationFrame(() => {
+      setActiveNav();
+      navScrollTicking = false;
+    });
+    navScrollTicking = true;
+  }
+}, { passive: true });
+setActiveNav();
+
+
+if ("IntersectionObserver" in window) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+
+  revealItems.forEach((item) => observer.observe(item));
+} else {
+  revealItems.forEach((item) => item.classList.add("is-visible"));
+}
+
+/* ----- Formularz kontaktowy: wysyłka do Google Forms ----- */
+const contactForm = document.getElementById("contactForm");
+const contactFormStatus = document.getElementById("contactFormStatus");
+const contactFormSubmit = document.getElementById("contactFormSubmit");
+
+if (contactForm && contactFormStatus && contactFormSubmit) {
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = (contactForm.querySelector('[name="name"]') && contactForm.querySelector('[name="name"]').value) || "";
+    const email = (contactForm.querySelector('[name="email"]') && contactForm.querySelector('[name="email"]').value) || "";
+    const phone = (contactForm.querySelector('[name="phone"]') && contactForm.querySelector('[name="phone"]').value) || "";
+    const message = (contactForm.querySelector('[name="message"]') && contactForm.querySelector('[name="message"]').value) || "";
+    const nameParts = name.trim().split(/\s+/);
+    const imie = nameParts[0] || "";
+    const nazwisko = nameParts.slice(1).join(" ") || "";
+
+    contactFormSubmit.disabled = true;
+    contactFormStatus.hidden = false;
+    contactFormStatus.textContent = "Wysyłanie…";
+    contactFormStatus.className = "contact-form-status contact-form-status--sending";
+
+    const formData = new FormData();
+    formData.append(GOOGLE_FORM_ENTRIES.imie, imie);
+    formData.append(GOOGLE_FORM_ENTRIES.nazwisko, nazwisko);
+    formData.append(GOOGLE_FORM_ENTRIES.email, email);
+    formData.append(GOOGLE_FORM_ENTRIES.telefon, phone);
+    formData.append(GOOGLE_FORM_ENTRIES.wiadomosc, message);
+
+    try {
+      await fetch(GOOGLE_FORM_ACTION, { method: "POST", mode: "no-cors", body: formData });
+      contactFormStatus.textContent = "Wiadomość wysłana. Odpiszę najszybciej jak to możliwe.";
+      contactFormStatus.className = "contact-form-status contact-form-status--success";
+      contactForm.reset();
+    } catch (err) {
+      contactFormStatus.textContent = "Błąd wysyłania. Spróbuj napisać na adres e-mail lub zadzwonić.";
+      contactFormStatus.className = "contact-form-status contact-form-status--error";
+    }
+    contactFormSubmit.disabled = false;
+  });
+}
+
+/* =========================
+   WARM NEURON BACKGROUND
+========================= */
+const canvas = document.getElementById("neuronCanvas");
+
+if (canvas) {
+  const ctx = canvas.getContext("2d");
+  let w = 0;
+  let h = 0;
+  let dpr = 1;
+  let nodes = [];
+  let mouse = {
+    x: -1000,
+    y: -1000,
+    active: false
+  };
+
+  function resizeCanvas() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = window.innerWidth;
+    h = window.innerHeight;
+
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    canvas.style.width = `${w}px`;
+    canvas.style.height = `${h}px`;
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    createNodes();
+  }
+
+  function createNodes() {
+    nodes = [];
+    const spacing = window.innerWidth < 768 ? 74 : 60;
+
+    for (let x = 0; x <= w + spacing; x += spacing) {
+      for (let y = 0; y <= h + spacing; y += spacing) {
+        nodes.push({
+          x: x + (Math.random() - 0.5) * 18,
+          y: y + (Math.random() - 0.5) * 18,
+          baseR: Math.random() * 1.2 + 1.2,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+  }
+
+  function setMouse(x, y) {
+    mouse.x = x;
+    mouse.y = y;
+    mouse.active = true;
+  }
+
+  window.addEventListener("mousemove", (e) => {
+    setMouse(e.clientX, e.clientY);
+  });
+
+  window.addEventListener(
+    "touchmove",
+    (e) => {
+      if (e.touches && e.touches[0]) {
+        setMouse(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    },
+    { passive: true }
+  );
+
+  window.addEventListener("mouseleave", () => {
+    mouse.active = false;
+    mouse.x = -1000;
+    mouse.y = -1000;
+  });
+
+  window.addEventListener("touchend", () => {
+    mouse.active = false;
+    mouse.x = -1000;
+    mouse.y = -1000;
+  });
+
+  function draw(time) {
+    ctx.clearRect(0, 0, w, h);
+
+    const influenceRadius = 180;
+    const linkDistance = 96;
+
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i];
+
+      for (let j = i + 1; j < nodes.length; j++) {
+        const b = nodes[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist > linkDistance) continue;
+
+        let glow = 0;
+
+        if (mouse.active) {
+          const da = Math.hypot(a.x - mouse.x, a.y - mouse.y);
+          const db = Math.hypot(b.x - mouse.x, b.y - mouse.y);
+          const ga = da < influenceRadius ? 1 - da / influenceRadius : 0;
+          const gb = db < influenceRadius ? 1 - db / influenceRadius : 0;
+          glow = Math.max(ga, gb);
+        }
+
+        const alpha = 0.045 + (1 - dist / linkDistance) * 0.055 + glow * 0.42;
+
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = `rgba(132, 165, 255, ${alpha})`;
+        ctx.lineWidth = glow > 0.15 ? 1.5 : 1;
+
+        if (glow > 0.08) {
+          ctx.shadowBlur = 10 + glow * 20;
+          ctx.shadowColor = "rgba(255, 214, 164, 0.95)";
+        } else {
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    for (const node of nodes) {
+      const pulse = 0.5 + 0.5 * Math.sin(time * 0.002 + node.phase);
+
+      let glow = 0;
+      if (mouse.active) {
+        const dist = Math.hypot(node.x - mouse.x, node.y - mouse.y);
+        if (dist < influenceRadius) {
+          glow = 1 - dist / influenceRadius;
+        }
+      }
+
+      const r = node.baseR + pulse * 0.45 + glow * 2.9;
+      const alpha = 0.16 + pulse * 0.12 + glow * 0.72;
+
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(145, 176, 255, ${alpha})`;
+
+      if (glow > 0.08) {
+        ctx.shadowBlur = 14 + glow * 24;
+        ctx.shadowColor = "rgba(255, 209, 153, 1)";
+      } else {
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  resizeCanvas();
+  requestAnimationFrame(draw);
+
+  let resizeTimer = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resizeCanvas, 120);
+  });
+}

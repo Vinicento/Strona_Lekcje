@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pobierz entry ID formularza Google</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 560px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+    h1 { font-size: 1.25rem; }
+    ol { padding-left: 1.25rem; }
+    code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 12px; }
+    .btn { display: inline-block; margin-top: 0.5rem; padding: 8px 14px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; }
+    .btn:hover { background: #1d4ed8; }
+    a { color: #2563eb; }
+  </style>
+</head>
+<body>
+  <h1>Pobierz entry ID z formularza Google</h1>
+  <p>Żeby formularz na stronie zapisywał odpowiedzi do Twojego formularza Google, w pliku <code>script.js</code> muszą być wpisane prawdziwe <strong>entry ID</strong> pól. Pobierz je tak:</p>
+  <ol>
+    <li>Otwórz swój formularz w <strong>widoku wypełniania</strong> (nie edycji):<br>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSc0S1AyTNnOzpvLbndvXT7xbXMglpZd4mIF6i2Hq8nMJjpNCA/viewform" target="_blank" rel="noopener">Otwórz formularz kontaktowy</a>
+    </li>
+    <li>Wciśnij <strong>F12</strong> (DevTools) → zakładka <strong>Console</strong>.</li>
+    <li>Wklej poniższy skrypt i naciśnij <strong>Enter</strong>.</li>
+    <li>W konsoli zobaczysz listę <code>entry.XXXXXX</code> w kolejności pól (Imię, Nazwisko, Email, Telefon, Wiadomość). Skopiuj je do <code>script.js</code> w zmiennej <code>GOOGLE_FORM_ENTRIES</code>.</li>
+  </ol>
+  <p><button class="btn" id="copyBtn">Skopiuj skrypt do schowka</button></p>
+  <pre id="script">[...document.querySelectorAll('[data-params]')]
+  .map(el => {
+    const m = el.dataset.params && el.dataset.params.match(/\[\[(\d+)/);
+    return m ? `entry.${m[1]}` : null;
+  })
+  .filter(Boolean)
+  .forEach((id, i) => console.log(id));</pre>
+
+  <script>
+    document.getElementById("copyBtn").addEventListener("click", () => {
+      const code = document.getElementById("script").textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        document.getElementById("copyBtn").textContent = "Skopiowano.";
+        setTimeout(() => { document.getElementById("copyBtn").textContent = "Skopiuj skrypt do schowka"; }, 2000);
+      });
+    });
+  </script>
+</body>
+</html>

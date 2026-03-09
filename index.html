@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Filip Szczypuła — Korepetycje z matematyki online</title>
+  <meta
+    name="description"
+    content="Korepetycje z matematyki dla uczniów szkoły podstawowej i liceum. Egzamin ósmoklasisty, matura podstawowa, bieżący materiał i spokojne, zrozumiałe tłumaczenie krok po kroku."
+  />
+  <meta name="theme-color" content="#0a0f1c" />
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://docs.google.com; connect-src 'self' https://formspree.io https://docs.google.com;"
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Filip Szczypuła — Korepetycje z matematyki" />
+  <meta
+    property="og:description"
+    content="Matematyka, która staje się zrozumiała. Indywidualne zajęcia online dla szkoły podstawowej i liceum."
+  />
+  <meta property="og:url" content="https://filipszczypula.pl/" />
+  <meta property="og:image" content="https://filipszczypula.pl/og-image.jpg" />
+  <meta property="og:locale" content="pl_PL" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Przejdź do treści</a>
+  <canvas id="neuronCanvas" class="neuron-canvas" aria-hidden="true"></canvas>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  <div class="bg-noise"></div>
+
+  <header class="site-header" id="top">
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="Strona główna Filip Szczypuła">
+        <span class="brand-mark">∫</span>
+        <span class="brand-text">Filip Szczypuła</span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Nawigacja główna">
+        <a href="#offer" class="nav-link">Oferta</a>
+        <a href="#process" class="nav-link">Jak pracuję</a>
+        <a href="#pricing" class="nav-link">Cennik</a>
+        <a href="#opinions" class="nav-link">Opinie</a>
+        <a href="#contact" class="nav-link">Kontakt</a>
+        <a href="#contact" class="btn btn-primary nav-cta">Skontaktuj się</a>
+      </nav>
+
+      <button
+        class="mobile-menu-btn"
+        id="mobileMenuBtn"
+        aria-label="Otwórz menu"
+        aria-expanded="false"
+        aria-controls="mobileNav"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav" role="navigation" aria-label="Menu mobilne">
+      <a href="#offer" class="nav-link mobile-nav-link">Oferta</a>
+      <a href="#process" class="nav-link mobile-nav-link">Jak pracuję</a>
+      <a href="#pricing" class="nav-link mobile-nav-link">Cennik</a>
+      <a href="#opinions" class="nav-link mobile-nav-link">Opinie</a>
+      <a href="#contact" class="nav-link mobile-nav-link">Kontakt</a>
+      <a href="#contact" class="btn btn-primary mobile-nav-cta">Skontaktuj się</a>
+    </div>
+  </header>
+
+  <main id="main-content" tabindex="-1">
+    <section class="hero">
+      <div class="container hero-grid hero-grid-main">
+        <div class="hero-copy reveal">
+          <div class="eyebrow">
+            <span class="pulse-dot"></span>
+            Matematyka 1:1 · tylko online
+          </div>
+
+          <h1>Matematyka, która w końcu staje się zrozumiała.</h1>
+
+          <p class="hero-lead">
+            Pomagam uczniom szkoły podstawowej i liceum spokojnie poukładać materiał,
+            nadrobić zaległości i przygotować się do egzaminu ósmoklasisty albo matury.
+            Zajęcia są indywidualne, konkretne i prowadzone tak, żeby uczeń naprawdę rozumiał,
+            skąd bierze się rozwiązanie — nie tylko znał gotowy schemat.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#contact" class="btn btn-primary">Umów pierwszą konsultację</a>
+            <a href="#pricing" class="btn btn-secondary">Zobacz cennik</a>
+          </div>
+
+          <div class="hero-trust">
+            <div class="hero-trust-item glass">
+              <strong>Indywidualna praca</strong>
+              <span>Tempo, poziom i zakres dopasowane do ucznia</span>
+            </div>
+            <div class="hero-trust-item glass">
+              <strong>Jasny plan</strong>
+              <span>Wiadomo, od czego zaczynamy i co robimy dalej</span>
+            </div>
+            <div class="hero-trust-item glass">
+              <strong>Pierwsza konsultacja gratis</strong>
+              <span>Na start sprawdzamy potrzeby i kierunek pracy</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-side reveal">
+          <div class="hero-profile glass">
+            <div class="hero-photo-frame">
+              <img
+                src="Filip_1.webp"
+                alt="Filip Szczypuła — korepetytor matematyki"
+                width="420"
+                height="540"
+              />
+            </div>
+            <div class="hero-profile-content">
+              <p class="hero-profile-name">Filip Szczypuła</p>
+              <p class="hero-profile-role">Korepetytor matematyki</p>
+              <ul class="hero-profile-points">
+                <li>egzamin ósmoklasisty</li>
+                <li>matura podstawowa</li>
+                <li>liceum i bieżący materiał</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container about-compact">
+        <div class="about-compact-inner glass reveal">
+          <span class="section-tag">O mnie</span>
+          <h2>Krótko o mnie</h2>
+          <p class="about-one-line">
+            Prowadzę korepetycje z matematyki — stawiam na zrozumienie, nie na schematy.
+            Pracuję indywidualnie, w tempie dopasowanym do ucznia. Pomagam przygotować się do matury i egzaminu ósmoklasisty oraz w bieżącym materiale.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="offer">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag">Oferta</span>
+          <h2>Zakres zajęć</h2>
+          <p>
+            Zajęcia są ułożone tak, żeby uczeń krok po kroku wzmacniał podstawy,
+            rozumiał zależności i pewniej poruszał się po kolejnych działach.
+          </p>
+        </div>
+
+        <div class="cards-3">
+          <article class="feature-card glass reveal">
+            <div class="icon-wrap">M</div>
+            <h3>Przygotowanie do matury</h3>
+            <p>
+              Systematyczna praca nad działami, które najczęściej wracają na maturze,
+              wraz z ćwiczeniem zapisu rozwiązań i pracy pod presją czasu.
+            </p>
+            <ul>
+              <li>zadania maturalne i arkusze CKE</li>
+              <li>powtórka działów od podstaw</li>
+              <li>plan przygotowania dopasowany do terminu matury</li>
+            </ul>
+          </article>
+
+          <article class="feature-card glass reveal">
+            <div class="icon-wrap">8</div>
+            <h3>Egzamin ósmoklasisty</h3>
+            <p>
+              Powtórka najważniejszych działów, praca na zadaniach egzaminacyjnych,
+              porządkowanie podstaw i ćwiczenie sposobu myślenia potrzebnego na teście.
+            </p>
+            <ul>
+              <li>ułamki, procenty, równania, geometria</li>
+              <li>arkusze i analiza typowych błędów</li>
+              <li>przygotowanie krok po kroku do egzaminu</li>
+            </ul>
+          </article>
+
+          <article class="feature-card glass reveal">
+            <div class="icon-wrap">L</div>
+            <h3>Bieżące wsparcie</h3>
+            <p>
+              Pomoc w regularnej nauce, kartkówkach, sprawdzianach i trudniejszych działach,
+              które blokują dalszy postęp.
+            </p>
+            <ul>
+              <li>funkcje, ciągi, geometria, trygonometria</li>
+              <li>nadrobienie zaległości i uporządkowanie podstaw</li>
+              <li>praca 1:1 w tempie dopasowanym do ucznia</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section accent-section" id="process">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag">Jak pracuję</span>
+          <h2>Jasny proces i spokojny postęp</h2>
+          <p>
+            Uczeń i rodzic od początku wiedzą, jak wygląda współpraca,
+            na czym się skupiamy i jaki jest kolejny krok.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item glass reveal">
+            <div class="timeline-step">1</div>
+            <div>
+              <h3>Pierwsza rozmowa i diagnoza</h3>
+              <p>
+                Sprawdzamy poziom ucznia, największe trudności, cel zajęć
+                i to, ile czasu zostało do egzaminu, sprawdzianu lub końca semestru.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item glass reveal">
+            <div class="timeline-step">2</div>
+            <div>
+              <h3>Plan pracy</h3>
+              <p>
+                Ustalamy kolejność tematów i priorytety. Dzięki temu każda lekcja ma sens,
+                a materiał układa się w logiczną całość.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item glass reveal">
+            <div class="timeline-step">3</div>
+            <div>
+              <h3>Zajęcia 1:1</h3>
+              <p>
+                Aktywnie poszukujemy sposobu, aby materiał stał się zrozumiały.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item glass reveal">
+            <div class="timeline-step">4</div>
+            <div>
+              <h3>Utrwalenie i dalszy kierunek</h3>
+              <p>
+                Po zajęciach wiadomo, co już działa, co jeszcze warto wzmocnić
+                i na czym najlepiej skupić się na kolejnych spotkaniach.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <article class="approach-panel glass reveal">
+          <h3>Moje podejście do nauczania</h3>
+          <p>
+            Zajęcia indywidualne to coś zupełnie innego niż lekcja w klasie. To proces rozumienia ucznia — wejścia do jego głowy, żeby dopasować metodę do tego, jak postrzega świat dana osoba.
+          </p>
+          <p>
+            To jest dla mnie stymulujące. Uwielbiam „trudnych” uczniów, bo sam takim byłem. Uczę matematyki, ponieważ to rozumiem — i chcę, żeby uczeń też mógł to poczuć.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag">Cennik</span>
+          <h2>Proste zasady współpracy</h2>
+          <p>
+            Można zacząć od pojedynczych zajęć albo od razu wejść w regularny tryb pracy.
+          </p>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="price-card price-card-featured reveal">
+            <div class="price-badge price-badge-featured">Najczęściej wybierane</div>
+            <h3>Pakiet 10 lekcji</h3>
+            <div class="price">
+              <span class="price-value">90</span> zł
+              <span class="price-per">/ godz.</span>
+            </div>
+            <div class="price-sub price-sub-featured">10h = 900 zł łącznie</div>
+            <ul>
+              <li>stałe miejsce w grafiku</li>
+              <li>systematyczna praca pod egzamin lub nadrobienie zaległości</li>
+              <li>najlepsza cena za godzinę</li>
+            </ul>
+            <a href="#contact" class="btn btn-primary btn-full">Umów pierwszą konsultację</a>
+          </article>
+
+          <article class="price-card glass reveal">
+            <div class="price-badge">Na start</div>
+            <h3>Pakiet 5 lekcji</h3>
+            <div class="price">
+              <span class="price-value">100</span> zł
+              <span class="price-per">/ godz.</span>
+            </div>
+            <div class="price-sub">5h = 500 zł łącznie</div>
+            <ul>
+              <li>zajęcia 1:1, dowolny zakres</li>
+              <li>dobra opcja na początek lub konkretny temat</li>
+              <li>elastyczne terminy</li>
+            </ul>
+            <a href="#contact" class="btn btn-secondary btn-full">Zapisz się</a>
+          </article>
+
+          <article class="price-card glass reveal">
+            <div class="price-badge">Pojedynczo</div>
+            <h3>Jedna lekcja</h3>
+            <div class="price">
+              <span class="price-value">120</span> zł
+              <span class="price-per">/ godz.</span>
+            </div>
+            <div class="price-sub">Jednorazowe spotkanie</div>
+            <ul>
+              <li>jedna godzina zajęć 1:1</li>
+              <li>np. pierwsze spotkanie lub pilny temat</li>
+              <li>bez zobowiązań</li>
+            </ul>
+            <a href="#contact" class="btn btn-secondary btn-full">Sprawdź dostępność</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section accent-section" id="opinions">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag">Opinie</span>
+          <h2>Co mówią uczniowie i rodzice</h2>
+          <p>
+            Kilka słów od tych, którzy przygotowywali się do egzaminów lub nadrabiali materiał.
+          </p>
+        </div>
+
+        <div class="opinions-layout reveal">
+          <div class="opinions-collage" aria-hidden="true">
+            <div class="collage-photo collage-photo-1">
+              <img src="images/absolwent_1.webp" alt="" width="200" height="200" loading="lazy" />
+            </div>
+            <div class="collage-photo collage-photo-2">
+              <img src="images/absolwent_2.webp" alt="" width="200" height="200" loading="lazy" />
+            </div>
+            <div class="collage-photo collage-photo-3">
+              <img src="images/absolwent_3.webp" alt="" width="200" height="200" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="testimonials-list">
+            <blockquote class="testimonial-card glass">
+              <p class="testimonial-text">„Konkretna praca, zero lania wody. Syn zdał bez stresu.”</p>
+              <footer class="testimonial-author">— Mama Marcina</footer>
+            </blockquote>
+            <blockquote class="testimonial-card glass">
+              <p class="testimonial-text">„Wszystko przerobione krok po kroku. Córka spokojna na egzaminie.”</p>
+              <footer class="testimonial-author">— Tata Ani</footer>
+            </blockquote>
+            <blockquote class="testimonial-card glass">
+              <p class="testimonial-text">„W końcu ktoś wytłumaczył. Wyniki w górę.”</p>
+              <footer class="testimonial-author">— Uczeń, matura podstawowa</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-copy reveal">
+            <span class="section-tag">Kontakt</span>
+            <h2>Porozmawiajmy o tym, czego teraz najbardziej potrzebuje uczeń.</h2>
+            <p>
+              Napisz lub zadzwoń. W wiadomości możesz od razu dodać klasę ucznia,
+              cel zajęć i ewentualnie klasę ucznia.
+            </p>
+
+            <div class="contact-callout glass">
+              <p class="contact-callout-lead">Najszybszy kontakt:</p>
+              <div class="contact-callout-links">
+                <a href="tel:+48575840980" class="contact-callout-btn contact-callout-phone">
+                  <svg class="contact-callout-icon contact-callout-icon-phone" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  575 840 980</a>
+                <a href="mailto:szczypulafilip1@gmail.com" class="contact-callout-btn contact-callout-email">✉ szczypulafilip1@gmail.com</a>
+              </div>
+              <p class="contact-callout-meta">Możesz też skorzystać z formularza poniżej.</p>
+            </div>
+          </div>
+
+          <div class="contact-form-wrap glass reveal">
+            <header class="contact-form-header">
+              <h3 class="contact-form-title">Formularz kontaktowy</h3>
+              <p class="contact-form-desc">Wypełnij pola — odpiszę najszybciej jak to możliwe.</p>
+            </header>
+            <form class="contact-form" id="contactForm" action="#" method="post" novalidate>
+              <input type="text" name="name" required placeholder="Imię i nazwisko" class="contact-input" aria-label="Imię i nazwisko" />
+              <input type="email" name="email" required placeholder="Adres e-mail" class="contact-input" aria-label="Adres e-mail" />
+              <input type="tel" name="phone" placeholder="Telefon (opcjonalnie)" class="contact-input" aria-label="Telefon" />
+              <textarea name="message" required placeholder="Wiadomość — np. klasa ucznia, cel zajęć" class="contact-input contact-textarea" rows="5" aria-label="Wiadomość"></textarea>
+              <p class="contact-form-status" id="contactFormStatus" aria-live="polite" hidden></p>
+              <button type="submit" class="btn btn-primary btn-submit" id="contactFormSubmit">
+                <span class="btn-submit-text">Wyślij wiadomość</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <a href="#top" class="footer-brand" aria-label="Powrót na górę — Filip Szczypuła">
+          <span class="brand-mark">∫</span>
+          <span class="footer-brand-text">Filip Szczypuła</span>
+        </a>
+
+        <nav class="footer-nav" aria-label="Nawigacja w stopce">
+          <div class="footer-nav-group">
+            <span class="footer-nav-label">Strona</span>
+            <div class="footer-nav-links">
+              <a href="#offer" class="footer-link">Oferta</a>
+              <a href="#process" class="footer-link">Jak pracuję</a>
+              <a href="#pricing" class="footer-link">Cennik</a>
+              <a href="#opinions" class="footer-link">Opinie</a>
+              <a href="#contact" class="footer-link">Kontakt</a>
+            </div>
+          </div>
+          <div class="footer-nav-group">
+            <span class="footer-nav-label">Informacje</span>
+            <div class="footer-nav-links">
+              <a href="privacy.html" class="footer-link">Polityka prywatności</a>
+            </div>
+          </div>
+        </nav>
+
+        <a href="#contact" class="footer-cta btn btn-primary">Skontaktuj się</a>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          © <span id="year"></span> Filip Szczypuła · Korepetycje z matematyki
+        </p>
+        <a href="#top" class="back-to-top" id="backToTop" aria-label="Przewiń do góry strony">
+          <span class="back-to-top-icon" aria-hidden="true">↑</span>
+          Do góry
+        </a>
+      </div>
+    </div>
+
+
+
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

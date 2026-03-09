@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polityka prywatności — Filip Szczypuła Korepetycje</title>
+  <meta
+    name="description"
+    content="Polityka prywatności i zasady przetwarzania danych osobowych na stronie Filipa Szczypuły."
+  />
+  <meta name="theme-color" content="#0a0f1c" />
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://docs.google.com; connect-src 'self';"
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="neuronCanvas" class="neuron-canvas" aria-hidden="true"></canvas>
+  <div class="bg-grid"></div>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">∫</span>
+        <span class="brand-text">Filip Szczypuła</span>
+      </a>
+      <a href="index.html#contact" class="btn btn-primary nav-cta">Kontakt</a>
+    </div>
+  </header>
+
+  <main class="privacy-main">
+    <div class="container privacy-content">
+      <h1>Polityka prywatności</h1>
+      <p class="privacy-updated">Ostatnia aktualizacja: <span id="privacyYear"></span></p>
+
+      <section>
+        <h2>1. Administrator danych</h2>
+        <p>
+          Administratorem danych osobowych przekazywanych przez formularz kontaktowy lub w wiadomości e-mail jest Filip Szczypuła.
+          W sprawach związanych z danymi osobowymi można skontaktować się pod adresem:
+          <a href="mailto:szczypulafilip1@gmail.com">szczypulafilip1@gmail.com</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2>2. Zakres i cel przetwarzania danych</h2>
+        <p>Przetwarzane mogą być dane podane dobrowolnie w formularzu kontaktowym lub wiadomości, w szczególności:</p>
+        <ul>
+          <li>imię i nazwisko,</li>
+          <li>adres e-mail,</li>
+          <li>numer telefonu,</li>
+          <li>informacje o klasie, poziomie nauki i celu zajęć,</li>
+          <li>treść wiadomości.</li>
+        </ul>
+        <p>Dane są wykorzystywane w celu:</p>
+        <ul>
+          <li>udzielenia odpowiedzi na zapytanie,</li>
+          <li>ustalenia terminu konsultacji lub zajęć,</li>
+          <li>prowadzenia kontaktu dotyczącego świadczonych usług,</li>
+          <li>dochowania praw i obowiązków wynikających z przepisów prawa, jeśli będzie to potrzebne.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>3. Podstawa prawna</h2>
+        <p>
+          Dane są przetwarzane na podstawie art. 6 ust. 1 lit. b RODO, gdy są potrzebne do podjęcia działań przed zawarciem umowy
+          lub do realizacji ustaleń dotyczących zajęć, a także na podstawie art. 6 ust. 1 lit. f RODO,
+          czyli prawnie uzasadnionego interesu administratora polegającego na obsłudze korespondencji i organizacji kontaktu.
+        </p>
+      </section>
+
+      <section>
+        <h2>4. Okres przechowywania danych</h2>
+        <p>
+          Dane są przechowywane przez czas potrzebny do obsługi zapytania, realizacji współpracy,
+          a następnie przez okres potrzebny do zabezpieczenia ewentualnych roszczeń lub wypełnienia obowiązków prawnych.
+        </p>
+      </section>
+
+      <section>
+        <h2>5. Odbiorcy danych</h2>
+        <p>
+          Dane mogą być powierzane podmiotom wspierającym obsługę strony i formularza kontaktowego,
+          w szczególności Google (Formularze Google — odbiór odpowiedzi z formularza kontaktowego) oraz dostawcom usług hostingowych i pocztowych,
+          wyłącznie w zakresie potrzebnym do działania strony i kontaktu z użytkownikiem.
+        </p>
+      </section>
+
+      <section>
+        <h2>6. Prawa użytkownika</h2>
+        <p>Osobie, której dane dotyczą, przysługuje prawo do:</p>
+        <ul>
+          <li>dostępu do danych,</li>
+          <li>sprostowania danych,</li>
+          <li>usunięcia danych,</li>
+          <li>ograniczenia przetwarzania,</li>
+          <li>wniesienia sprzeciwu wobec przetwarzania,</li>
+          <li>wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>7. Formularz kontaktowy i pliki cookies</h2>
+        <p>
+          Formularz kontaktowy na stronie wysyła dane do Formularzy Google (Google Forms). Wysłanie formularza oznacza dobrowolne przekazanie danych potrzebnych do kontaktu.
+          Strona może również wykorzystywać techniczne pliki cookies lub podobne technologie niezbędne do prawidłowego działania serwisu i osadzonych elementów.
+        </p>
+      </section>
+
+      <section>
+        <h2>8. Dobrowolność podania danych</h2>
+        <p>
+          Podanie danych jest dobrowolne, ale potrzebne do uzyskania odpowiedzi i sprawnej organizacji kontaktu w sprawie korepetycji.
+        </p>
+      </section>
+
+      <p class="privacy-back"><a href="index.html">← Powrót na stronę główną</a></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <div class="footer-brand">
+        <span class="brand-mark">∫</span>
+        <span>Filip Szczypuła</span>
+      </div>
+
+      <nav class="footer-links">
+        <a href="index.html#offer">Oferta</a>
+        <a href="index.html#contact">Kontakt</a>
+        <a href="privacy.html">Polityka prywatności</a>
+      </nav>
+
+      <div class="footer-copy">© <span id="year"></span> Filip Szczypuła • Korepetycje z matematyki</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    const currentYear = new Date().getFullYear();
+    const privacyYearEl = document.getElementById("privacyYear");
+    if (privacyYearEl) privacyYearEl.textContent = currentYear;
+  </script>
+</body>
+</html>
