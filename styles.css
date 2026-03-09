@@ -394,8 +394,36 @@ main {
   height: 8px;
   border-radius: 999px;
   background: var(--success);
-  box-shadow: 0 0 0 0 rgba(89, 201, 159, 0.4);
-  animation: pulse 2.4s infinite;
+  position: relative;
+  overflow: visible;
+}
+
+/* Composited pulse ring (transform + opacity only) instead of box-shadow */
+.pulse-dot::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: 999px;
+  border: 2px solid rgba(89, 201, 159, 0.42);
+  transform: scale(0.25);
+  opacity: 1;
+  animation: pulse-ring 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.25);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
 }
 
 .hero h1 {
@@ -1313,17 +1341,6 @@ main {
   transform: translateY(0);
 }
 
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(89, 201, 159, 0.42);
-  }
-  70% {
-    box-shadow: 0 0 0 14px rgba(89, 201, 159, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(89, 201, 159, 0);
-  }
-}
 
 @media (max-width: 1120px) {
   .hero-grid-main,

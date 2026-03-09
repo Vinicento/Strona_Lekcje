@@ -36,21 +36,11 @@ if (mobileMenuBtn && mobileNav) {
 /* ----- Active section in nav (desktop + mobile) ----- */
 const sectionIds = ["offer", "process", "pricing", "opinions", "contact"];
 const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
-const headerOffset = 120;
+/** Set of section ids currently intersecting the "active" zone (top 200px of viewport) */
+const intersectingSections = new Set();
 
-function setActiveNav() {
-  let activeId = null;
-  let maxTop = -Infinity;
-  for (const id of sectionIds) {
-    const section = document.getElementById(id);
-    if (!section) continue;
-    const top = section.getBoundingClientRect().top;
-    if (top <= headerOffset + 80 && top > maxTop) {
-      maxTop = top;
-      activeId = id;
-    }
-  }
-  if (!activeId && sectionIds.length) activeId = sectionIds[0];
+function setActiveNavFromIntersecting() {
+  const activeId = sectionIds.find((id) => intersectingSections.has(id)) || sectionIds[0];
   navLinks.forEach((link) => {
     const href = link.getAttribute("href");
     const isActive = href === "#" + activeId;
@@ -59,17 +49,27 @@ function setActiveNav() {
   });
 }
 
-let navScrollTicking = false;
-window.addEventListener("scroll", () => {
-  if (!navScrollTicking) {
-    requestAnimationFrame(() => {
-      setActiveNav();
-      navScrollTicking = false;
-    });
-    navScrollTicking = true;
-  }
-}, { passive: true });
-setActiveNav();
+if ("IntersectionObserver" in window && navLinks.length) {
+  const navObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.id;
+        if (entry.isIntersecting) {
+          intersectingSections.add(id);
+        } else {
+          intersectingSections.delete(id);
+        }
+      });
+      setActiveNavFromIntersecting();
+    },
+    { rootMargin: "-200px 0px 0px 0px", threshold: 0 }
+  );
+  sectionIds.forEach((id) => {
+    const section = document.getElementById(id);
+    if (section) navObserver.observe(section);
+  });
+  setActiveNavFromIntersecting();
+}
 
 
 if ("IntersectionObserver" in window) {
@@ -136,11 +136,12 @@ if (contactForm && contactFormStatus && contactFormSubmit) {
 }
 
 /* =========================
-   WARM NEURON BACKGROUND
+   WARM NEURON BACKGROUND (deferred to avoid blocking LCP)
 ========================= */
 const canvas = document.getElementById("neuronCanvas");
 
-if (canvas) {
+function initNeuronCanvas() {
+  if (!canvas) return;
   const ctx = canvas.getContext("2d");
   let w = 0;
   let h = 0;
@@ -371,4 +372,12 @@ if (canvas) {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(resizeCanvas, 120);
   });
+}
+
+if (canvas) {
+  if (typeof requestIdleCallback !== "undefined") {
+    requestIdleCallback(initNeuronCanvas, { timeout: 2000 });
+  } else {
+    setTimeout(initNeuronCanvas, 1);
+  }
 }

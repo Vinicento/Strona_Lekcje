@@ -1,0 +1,10 @@
+{
+  "name": "filip-strona",
+  "private": true,
+  "scripts": {
+    "generate-images": "node scripts/generate-images.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.0"
+  }
+}
