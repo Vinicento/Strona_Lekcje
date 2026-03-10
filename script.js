@@ -5,6 +5,8 @@ const yearEl = document.getElementById("year");
 
 /* ----- Google Form: zapis do Twojego formularza (bez logo, bez „Wyczyść”) ----- */
 const GOOGLE_FORM_ACTION = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSc0S1AyTNnOzpvLbndvXT7xbXMglpZd4mIF6i2Hq8nMJjpNCA/formResponse";
+/** Wklej tutaj pełną wartość „send_to” z Google Ads (Konwersje → Twoja akcja → Zainstaluj tag ręcznie), np. "AW-18006328915/AbCdEfGh". Zostaw pusty, jeśli nie używasz konwersji formularza. */
+const GOOGLE_ADS_FORM_CONVERSION_SEND_TO = "";
 const GOOGLE_FORM_ENTRIES = {
   imie: "entry.802299419",
   nazwisko: "entry.391572716",
@@ -127,6 +129,9 @@ if (contactForm && contactFormStatus && contactFormSubmit) {
       contactFormStatus.textContent = "Wiadomość wysłana. Odpiszę najszybciej jak to możliwe.";
       contactFormStatus.className = "contact-form-status contact-form-status--success";
       contactForm.reset();
+      if (typeof gtag === "function" && GOOGLE_ADS_FORM_CONVERSION_SEND_TO) {
+        gtag("event", "conversion", { send_to: GOOGLE_ADS_FORM_CONVERSION_SEND_TO });
+      }
     } catch (err) {
       contactFormStatus.textContent = "Błąd wysyłania. Spróbuj napisać na adres e-mail lub zadzwonić.";
       contactFormStatus.className = "contact-form-status contact-form-status--error";
@@ -134,6 +139,15 @@ if (contactForm && contactFormStatus && contactFormSubmit) {
     contactFormSubmit.disabled = false;
   });
 }
+
+/* ----- Google Ads: zdarzenie przy kliknięciu „Skontaktuj się” ----- */
+document.querySelectorAll('a[href="#contact"]').forEach((link) => {
+  link.addEventListener("click", () => {
+    if (typeof gtag === "function") {
+      gtag("event", "contact_click", { event_category: "engagement", event_label: "Skontaktuj się" });
+    }
+  });
+});
 
 /* =========================
    WARM NEURON BACKGROUND (deferred to avoid blocking LCP)
