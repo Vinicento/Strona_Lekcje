@@ -507,6 +507,14 @@ main {
   line-height: 1.5;
 }
 
+.hero-trust-signal {
+  margin: 20px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 52ch;
+}
+
 .hero-profile {
   padding: 24px;
   border-radius: 28px;
@@ -783,6 +791,10 @@ main {
   color: var(--primary);
   font-size: 22px;
   font-weight: 800;
+}
+
+.timeline-step::before {
+  content: attr(data-step);
 }
 
 .price-card {
