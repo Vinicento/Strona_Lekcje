@@ -586,9 +586,16 @@ main {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #7d99ff, #98b0ff);
-  color: white;
-  box-shadow: 0 16px 40px rgba(109, 140, 255, 0.24);
+  background: linear-gradient(135deg, #4f6ef7, #6d8cff);
+  color: #fff;
+  border-color: rgba(79, 110, 247, 0.4);
+  box-shadow: 0 4px 14px rgba(79, 110, 247, 0.35), 0 16px 40px rgba(79, 110, 247, 0.25);
+  font-weight: 800;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #435ee8, #5c7cf6);
+  box-shadow: 0 6px 20px rgba(79, 110, 247, 0.4), 0 20px 48px rgba(79, 110, 247, 0.3);
 }
 
 .btn-secondary {
