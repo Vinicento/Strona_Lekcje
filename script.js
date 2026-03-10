@@ -167,10 +167,8 @@ function initNeuronCanvas() {
 
   function resizeCanvas() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const maxW = 1920;
-    const maxH = 1080;
-    w = Math.min(window.innerWidth, maxW);
-    h = Math.min(window.innerHeight, maxH);
+    w = window.innerWidth;
+    h = window.innerHeight;
 
     canvas.width = Math.floor(w * dpr);
     canvas.height = Math.floor(h * dpr);

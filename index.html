@@ -35,7 +35,70 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root{--bg:#f6f8ff;--bg-2:#eef3ff;--text:#1e2a44;--text-strong:#12203b;--muted:#5f6f92;--primary:#6d8cff;--border:rgba(120,144,220,.18);--border-strong:rgba(120,144,220,.28);--shadow:0 20px 60px rgba(74,93,150,.14);--shadow-soft:0 10px 30px rgba(74,93,150,.08);--radius-sm:16px;--radius-md:20px;--container:1200px}
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:"Inter",system-ui,sans-serif;color:var(--text);min-height:100vh;overflow-x:hidden;position:relative;background:radial-gradient(ellipse 100% 80% at 15% 10%,rgba(255,220,176,.38),transparent 48%),radial-gradient(ellipse 85% 65% at 88% 15%,rgba(174,202,255,.3),transparent 48%),linear-gradient(180deg,#fbfcff 0%,#f6f8ff 50%,#fffaf4 100%)}
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    button,input,textarea,select{font:inherit}
+    .skip-link{position:fixed;top:-100px;left:50%;transform:translateX(-50%);z-index:100;padding:14px 24px;background:var(--text-strong);color:#fff;font-weight:700;font-size:14px;border-radius:var(--radius-sm);box-shadow:var(--shadow);transition:top .2s ease}
+    .skip-link:focus{top:20px;outline:3px solid var(--primary);outline-offset:4px}
+    section[id]{scroll-margin-top:100px}
+    .container,.site-header,.site-footer,main{position:relative;z-index:2}
+    .container{width:min(calc(100% - 40px),var(--container));margin:0 auto}
+    .neuron-canvas,.bg-grid,.bg-noise,.bg-glow{position:fixed;inset:0;pointer-events:none;contain:layout style paint}
+    .neuron-canvas{width:100%;height:100%;z-index:1;opacity:1}
+    .bg-grid{z-index:0;background-image:linear-gradient(rgba(125,148,220,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(125,148,220,.16) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse 120% 100% at 50% 50%,#000 0%,rgba(0,0,0,.4) 55%,transparent 78%);-webkit-mask-image:radial-gradient(ellipse 120% 100% at 50% 50%,#000 0%,rgba(0,0,0,.4) 55%,transparent 78%)}
+    .bg-noise{z-index:0;opacity:.035;background-image:radial-gradient(circle at 20% 20%,rgba(99,117,188,.12) .7px,transparent .7px),radial-gradient(circle at 80% 60%,rgba(99,117,188,.1) .7px,transparent .7px);background-size:26px 26px,32px 32px}
+    .bg-glow{z-index:0;filter:blur(40px)}
+    .glow-1{background:radial-gradient(circle at 18% 12%,rgba(255,214,164,.34),transparent 30%)}
+    .glow-2{background:radial-gradient(circle at 82% 18%,rgba(158,187,255,.3),transparent 28%)}
+    .glass{background:linear-gradient(180deg,rgba(255,255,255,.88),rgba(255,255,255,.82));border:1px solid var(--border);box-shadow:var(--shadow)}
+    .site-header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.62);backdrop-filter:blur(18px);border-bottom:1px solid rgba(120,144,220,.12)}
+    .nav{min-height:80px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:inline-flex;align-items:center;gap:12px;font-weight:800}
+    .brand-mark{width:44px;height:44px;border-radius:50%;display:inline-grid;place-items:center;flex-shrink:0;background:linear-gradient(165deg,rgba(158,182,255,.32),rgba(255,228,196,.28));border:1.5px solid rgba(120,144,220,.35);box-shadow:0 2px 8px rgba(109,140,255,.12),inset 0 1px 0 rgba(255,255,255,.5);color:var(--primary)}.brand-mark-svg{width:26px;height:26px;display:block}.brand-mark-int{font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-size:28px;font-weight:800;fill:currentColor;letter-spacing:-.04em}
+    .brand-text{color:var(--text-strong);letter-spacing:-.02em}
+    .desktop-nav{display:flex;align-items:center;gap:20px}
+    .nav-link{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;color:var(--muted);font-size:14px;font-weight:500;transition:color .2s ease,background .2s ease;border-radius:10px}
+    .nav-link:hover{color:var(--text-strong)}
+    .nav-link.is-active{color:var(--primary);font-weight:600}
+    .mobile-menu-btn{display:none;width:48px;height:48px;min-width:48px;min-height:48px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.86);padding:0;align-items:center;justify-content:center;flex-direction:column;gap:5px;cursor:pointer;transition:background .2s ease,border-color .2s ease}
+    .mobile-menu-btn span{width:20px;height:2px;border-radius:999px;background:var(--text-strong);transition:transform .25s ease,opacity .2s ease}
+    .mobile-nav{display:none;padding:20px 20px 24px;background:rgba(255,255,255,.98);border-top:1px solid rgba(120,144,220,.12);box-shadow:0 10px 40px rgba(74,93,150,.08)}
+    .mobile-nav.is-open{display:block}
+    .mobile-nav-link{display:flex;align-items:center;min-height:48px;padding:0 4px;color:var(--muted);font-size:15px;font-weight:500}
+    .section{padding:88px 0;position:relative}
+    .hero{padding:64px 0 56px}
+    .hero-grid-main{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:48px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.66);border:1px solid var(--border);color:#556891;font-size:14px;margin-bottom:20px;box-shadow:var(--shadow-soft)}
+    .pulse-dot{width:8px;height:8px;border-radius:999px;background:var(--success);position:relative;overflow:visible}
+    .pulse-dot::before{content:"";position:absolute;inset:-14px;border-radius:999px;border:2px solid rgba(89,201,159,.42);transform:scale(.25);opacity:1;animation:pulse-ring 2.4s ease-out infinite;pointer-events:none}
+    @keyframes pulse-ring{0%{transform:scale(.25);opacity:1}70%{transform:scale(1);opacity:0}100%{transform:scale(1);opacity:0}}
+    .hero h1{margin:0;font-size:clamp(40px,5vw,72px);line-height:1.04;letter-spacing:-.05em;font-weight:800;max-width:12ch;color:var(--text-strong)}
+    .hero-lead{margin:24px 0 0;max-width:60ch;color:var(--muted);font-size:18px;line-height:1.75}
+    .hero-actions{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+    .hero-trust{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+    .hero-trust-item{padding:22px;border-radius:20px;min-width:0}
+    .hero-trust-item strong{display:block;font-size:16px;margin-bottom:8px;color:var(--text-strong)}
+    .hero-trust-item span{display:block;color:var(--muted);font-size:14px;line-height:1.5}
+    .hero-profile{padding:24px;border-radius:28px;max-width:340px;margin-left:auto;min-width:0}
+    .hero-photo-frame{aspect-ratio:4/5;width:100%;max-height:380px;border-radius:20px;overflow:hidden;margin-bottom:20px;border:1px solid rgba(120,144,220,.12)}
+    .hero-photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center top}
+    .hero-profile-name{margin:0;font-size:28px;font-weight:700;color:var(--text-strong)}
+    .hero-profile-role{margin:8px 0 0;color:var(--primary);font-size:16px;font-weight:600}
+    .hero-profile-points{margin:16px 0 0;padding-left:20px;color:var(--text)}
+    .btn{min-height:48px;padding:0 20px;border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;letter-spacing:.01em;transition:transform .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease;border:1px solid transparent}
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:linear-gradient(135deg,#7d99ff,#98b0ff);color:#fff;box-shadow:0 16px 40px rgba(109,140,255,.24)}
+    .btn-secondary{background:rgba(255,255,255,.72);color:var(--text-strong);border-color:rgba(120,144,220,.18)}
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}
+    .reveal.is-visible{opacity:1;transform:translateY(0)}
+  </style>
+  <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="styles.css" /></noscript>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 </head>
 <body>
@@ -50,7 +113,11 @@
   <header class="site-header" id="top">
     <div class="container nav">
       <a href="#top" class="brand" aria-label="Strona główna Filip Szczypuła">
-        <span class="brand-mark">∫</span>
+        <span class="brand-mark" aria-hidden="true">
+          <svg class="brand-mark-svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle" class="brand-mark-int">∫</text>
+          </svg>
+        </span>
         <span class="brand-text">Filip Szczypuła</span>
       </a>
 
@@ -90,7 +157,7 @@
         <div class="hero-copy">
           <div class="eyebrow">
             <span class="pulse-dot"></span>
-            Matematyka 1:1 · tylko online
+            Matematyka Online
           </div>
 
           <h1>Matematyka, która w końcu staje się zrozumiała.</h1>
@@ -313,7 +380,7 @@
               <li>systematyczna praca pod egzamin lub nadrobienie zaległości</li>
               <li>najlepsza cena za godzinę</li>
             </ul>
-            <a href="#contact" class="btn btn-primary btn-full">Umów pierwszą konsultację</a>
+            <a href="#contact" class="btn btn-primary btn-full">Skontaktuj się</a>
           </article>
 
           <article class="price-card glass reveal">
@@ -329,7 +396,7 @@
               <li>dobra opcja na początek lub konkretny temat</li>
               <li>elastyczne terminy</li>
             </ul>
-            <a href="#contact" class="btn btn-secondary btn-full">Zapisz się</a>
+            <a href="#contact" class="btn btn-secondary btn-full">Skontaktuj się</a>
           </article>
 
           <article class="price-card glass reveal">
@@ -345,7 +412,7 @@
               <li>np. pierwsze spotkanie lub pilny temat</li>
               <li>bez zobowiązań</li>
             </ul>
-            <a href="#contact" class="btn btn-secondary btn-full">Sprawdź dostępność</a>
+            <a href="#contact" class="btn btn-secondary btn-full">Skontaktuj się</a>
           </article>
         </div>
       </div>
@@ -400,16 +467,23 @@
 
           <div class="testimonials-list">
             <blockquote class="testimonial-card glass">
-              <p class="testimonial-text">„Konkretna praca, zero lania wody. Syn zdał bez stresu.”</p>
-              <footer class="testimonial-author">— Mama Marcina</footer>
+              <p class="testimonial-text">
+                „Syn miał spore braki z matematyki i szybko tracił motywację.
+                Po kilku zajęciach materiał zaczął być dla niego jasny, a przed egzaminem
+                podchodził do wszystkiego o wiele spokojniej.”
+              </p>
             </blockquote>
             <blockquote class="testimonial-card glass">
-              <p class="testimonial-text">„Wszystko przerobione krok po kroku. Córka spokojna na egzaminie.”</p>
-              <footer class="testimonial-author">— Tata Ani</footer>
+              <p class="testimonial-text">
+                „Najbardziej pomogło mi to, że każde zadanie było tłumaczone od podstaw i bez pośpiechu.
+                W końcu zrozumiałem, skąd biorą się kolejne kroki w rozwiązaniach.”
+              </p>
             </blockquote>
             <blockquote class="testimonial-card glass">
-              <p class="testimonial-text">„W końcu ktoś wytłumaczył. Wyniki w górę.”</p>
-              <footer class="testimonial-author">— Uczeń, matura podstawowa</footer>
+              <p class="testimonial-text">
+                „Potrzebowałem szybko ogarnąć materiał przed kolokwium.
+                Kilka spotkań wystarczyło, żeby uporządkować temat i bez stresu zaliczyć.”
+              </p>
             </blockquote>
           </div>
         </div>
@@ -445,10 +519,10 @@
               <p class="contact-form-desc">Wypełnij pola — odpiszę najszybciej jak to możliwe.</p>
             </header>
             <form class="contact-form" id="contactForm" action="#" method="post" novalidate>
-              <input type="text" name="name" required placeholder="Imię i nazwisko" class="contact-input" aria-label="Imię i nazwisko" />
-              <input type="email" name="email" required placeholder="Adres e-mail" class="contact-input" aria-label="Adres e-mail" />
-              <input type="tel" name="phone" placeholder="Telefon (opcjonalnie)" class="contact-input" aria-label="Telefon" />
-              <textarea name="message" required placeholder="Wiadomość — np. klasa ucznia, cel zajęć" class="contact-input contact-textarea" rows="5" aria-label="Wiadomość"></textarea>
+              <input type="text" name="name" required placeholder="Imię i nazwisko" class="contact-input" aria-label="Imię i nazwisko" autocomplete="name" />
+              <input type="email" name="email" required placeholder="Adres e-mail" class="contact-input" aria-label="Adres e-mail" autocomplete="email" />
+              <input type="tel" name="phone" placeholder="Telefon (opcjonalnie)" class="contact-input" aria-label="Telefon" autocomplete="tel" />
+              <textarea name="message" required placeholder="Wiadomość — np. klasa ucznia, cel zajęć" class="contact-input contact-textarea" rows="5" aria-label="Wiadomość" autocomplete="off"></textarea>
               <p class="contact-form-status" id="contactFormStatus" aria-live="polite" hidden></p>
               <button type="submit" class="btn btn-primary btn-submit" id="contactFormSubmit">
                 <span class="btn-submit-text">Wyślij wiadomość</span>
@@ -464,7 +538,11 @@
     <div class="container footer-inner">
       <div class="footer-top">
         <a href="#top" class="footer-brand" aria-label="Powrót na górę — Filip Szczypuła">
-          <span class="brand-mark">∫</span>
+          <span class="brand-mark" aria-hidden="true">
+            <svg class="brand-mark-svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle" class="brand-mark-int">∫</text>
+            </svg>
+          </span>
           <span class="footer-brand-text">Filip Szczypuła</span>
         </a>
 
