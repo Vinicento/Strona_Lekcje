@@ -670,6 +670,11 @@ main {
 }
 
 /* Pojedynczy panel „Moje podejście do nauczania” */
+.container-full {
+  max-width: 100%;
+  width: min(calc(100% - 40px), var(--container));
+}
+
 .approach-panel {
   margin-top: 28px;
   padding: 32px 36px;
@@ -677,6 +682,13 @@ main {
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.approach-panel-full {
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
 }
 
 .approach-panel h3 {
@@ -696,6 +708,48 @@ main {
 
 .approach-panel p + p {
   margin-top: 16px;
+}
+
+.approach-panel p strong {
+  color: var(--text-strong);
+  font-weight: 700;
+}
+
+.approach-panel-full p {
+  max-width: 72ch;
+}
+
+.approach-panel-full p + p {
+  margin-top: 20px;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+  gap: 40px;
+  align-items: start;
+}
+
+.about-photo-wrap {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft), 0 0 0 1px rgba(120, 144, 220, 0.1);
+  background: var(--bg-2);
+  transform: rotate(2deg);
+}
+
+.about-photo-wrap:hover {
+  transform: rotate(1deg) scale(1.02);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(120, 144, 220, 0.12);
+}
+
+.about-photo {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
 }
 
 .feature-card,
@@ -1273,8 +1327,14 @@ main {
   .pricing-grid,
   .cards-3,
   .math-grid,
-  .benefits-grid {
+  .benefits-grid,
+  .about-grid {
     grid-template-columns: 1fr;
+  }
+
+  .about-photo-wrap {
+    max-width: 340px;
+    margin: 0 auto;
   }
 
   .opinions-layout {
