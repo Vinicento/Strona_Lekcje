@@ -129,12 +129,25 @@ if (contactForm && contactFormStatus && contactFormSubmit) {
       contactFormStatus.textContent = "Wiadomość wysłana. Odpiszę najszybciej jak to możliwe.";
       contactFormStatus.className = "contact-form-status contact-form-status--success";
       contactForm.reset();
-      if (typeof gtag === "function" && GOOGLE_ADS_FORM_CONVERSION_SEND_TO) {
-        gtag("event", "conversion", {
-          send_to: GOOGLE_ADS_FORM_CONVERSION_SEND_TO,
-          value: 1.0,
-          currency: "PLN"
-        });
+      if (GOOGLE_ADS_FORM_CONVERSION_SEND_TO) {
+        if (typeof gtag === "function") {
+          gtag("event", "conversion", {
+            send_to: GOOGLE_ADS_FORM_CONVERSION_SEND_TO,
+            value: 1.0,
+            currency: "PLN"
+          });
+        } else {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push([
+            "event",
+            "conversion",
+            {
+              send_to: GOOGLE_ADS_FORM_CONVERSION_SEND_TO,
+              value: 1.0,
+              currency: "PLN"
+            }
+          ]);
+        }
       }
     } catch (err) {
       contactFormStatus.textContent = "Błąd wysyłania. Spróbuj napisać na adres e-mail lub zadzwonić.";
