@@ -6,7 +6,7 @@ const yearEl = document.getElementById("year");
 /* ----- Google Form: zapis do Twojego formularza (bez logo, bez „Wyczyść”) ----- */
 const GOOGLE_FORM_ACTION = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSc0S1AyTNnOzpvLbndvXT7xbXMglpZd4mIF6i2Hq8nMJjpNCA/formResponse";
 /** Wklej tutaj pełną wartość „send_to” z Google Ads (Konwersje → Twoja akcja → Zainstaluj tag ręcznie), np. "AW-18006328915/AbCdEfGh". Zostaw pusty, jeśli nie używasz konwersji formularza. */
-const GOOGLE_ADS_FORM_CONVERSION_SEND_TO = "";
+const GOOGLE_ADS_FORM_CONVERSION_SEND_TO = "AW-18006328915/oSZ5COXjhIYcENOMi4pD";
 const GOOGLE_FORM_ENTRIES = {
   imie: "entry.802299419",
   nazwisko: "entry.391572716",
@@ -130,7 +130,11 @@ if (contactForm && contactFormStatus && contactFormSubmit) {
       contactFormStatus.className = "contact-form-status contact-form-status--success";
       contactForm.reset();
       if (typeof gtag === "function" && GOOGLE_ADS_FORM_CONVERSION_SEND_TO) {
-        gtag("event", "conversion", { send_to: GOOGLE_ADS_FORM_CONVERSION_SEND_TO });
+        gtag("event", "conversion", {
+          send_to: GOOGLE_ADS_FORM_CONVERSION_SEND_TO,
+          value: 1.0,
+          currency: "PLN"
+        });
       }
     } catch (err) {
       contactFormStatus.textContent = "Błąd wysyłania. Spróbuj napisać na adres e-mail lub zadzwonić.";
